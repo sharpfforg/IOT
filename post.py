@@ -1,8 +1,11 @@
-import httplib    
+// IOT network data
+
+import httplib
 import os
 
 #http://api.yeelink.net/v1.0/device/14437/sensor/24200/datapoints
 #http://api.yeelink.net/v1.0/device/14437/sensor/24202/datapoints
+
 
 API_KEY = 'f8926b9d9151f7d0210034a68b957227'
 DEV_ID = '14437'
