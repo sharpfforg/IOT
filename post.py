@@ -1,5 +1,4 @@
 // IOT network data
-
 import httplib
 import os
 
