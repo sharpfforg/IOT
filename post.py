@@ -1,4 +1,4 @@
-// IOT network data
+# IOT network debug tool
 import httplib
 import os
 
@@ -25,24 +25,26 @@ body4_post = ''
 
 method = 'GET' #'POST' or 'GET'             ####
 
+
 pic_path = '2.jpg'                          ####
-fh = open(pic_path)
-for line in fh.readlines(): 
-    body4_post += line
-fh.close()
+if os.path.exists(pic_path):
+    fh = open(pic_path, "r")
+    for line in fh.readlines():
+        body4_post += line
+    fh.close()
 
 
 body4_get_info_or_content = ''
-body = body4_get_info_or_content                           ####
+body = body2_get                           ####
 content_length = str(len(body))
 
-SEN_ID = SEN_ID4                            ####
+SEN_ID = SEN_ID2                            ####
 
 IF_PHOTO_NOT = '/datapoints'
 IF_PHOTO_POST = '/photos' # '' or '/photos'
 IF_PHOTO_INFO = '/photo/info'
 IF_PHOTO_CONTENT = '/photo/content'
-IF_PHOTO = IF_PHOTO_CONTENT                  ####
+IF_PHOTO = IF_PHOTO_NOT                  ####
 
 
 req = '/v1.0/device/' + DEV_ID + '/sensor/' + SEN_ID + IF_PHOTO \
