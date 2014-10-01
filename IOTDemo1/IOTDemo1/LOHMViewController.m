@@ -64,7 +64,7 @@
 - (void)requestSenInfo
 {
     int dev_id = 14437;
-    int sen_id = 24331;
+    int sen_id = 24937;
     
 //    NSString *body = @""; // [body UTF8String] string2bytes
 //    _connection = [[NetworkManager sharedInstance] genericData:@"GET" APIKey:nil deviceID:dev_id sensorID:sen_id data:[body UTF8String] photo:nil id:self];
