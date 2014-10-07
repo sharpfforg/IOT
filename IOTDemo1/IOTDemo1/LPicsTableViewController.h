@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LPicsTableViewCell.h"
+
 
 @interface LPicsTableViewController : UITableViewController
 

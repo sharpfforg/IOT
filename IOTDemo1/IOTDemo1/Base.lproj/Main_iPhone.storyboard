@@ -53,7 +53,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="RWD-gx-Sr8" kind="push" id="Mz7-uf-YSN"/>
+                                            <segue destination="WqH-I3-0yc" kind="push" id="Vby-Ah-7Po"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="T20-1G-eq3" style="IBUITableViewCellStyleDefault" id="jh1-cf-kgp">
@@ -90,24 +90,24 @@
             </objects>
             <point key="canvasLocation" x="465" y="-20"/>
         </scene>
-        <!--Table View Controller - Monitor 2-->
+        <!--Pics Table View Controller - Monitor 2-->
         <scene sceneID="cfj-3z-Wfq">
             <objects>
-                <tableViewController id="d3d-F1-5WG" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="177" sectionHeaderHeight="22" sectionFooterHeight="22" id="p1c-Gr-0RC">
+                <tableViewController id="d3d-F1-5WG" customClass="LPicsTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="170" sectionHeaderHeight="22" sectionFooterHeight="22" id="p1c-Gr-0RC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="idPicture" rowHeight="177" id="D7a-xf-H5C" customClass="LPicsTableViewCell">
-                                <rect key="frame" x="0.0" y="86" width="320" height="177"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="idPicture" rowHeight="170" id="D7a-xf-H5C" customClass="LPicsTableViewCell">
+                                <rect key="frame" x="0.0" y="86" width="320" height="170"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="D7a-xf-H5C" id="cIk-LG-sUb">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="176"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="169"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4pw-pK-K1b">
-                                            <rect key="frame" x="141" y="0.0" width="179" height="176"/>
+                                        <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4pw-pK-K1b">
+                                            <rect key="frame" x="141" y="0.0" width="179" height="169"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </imageView>
                                     </subviews>
@@ -126,9 +126,9 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e49-w3-qRB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="776" y="677"/>
+            <point key="canvasLocation" x="744" y="821"/>
         </scene>
-        <!--View Controller - Monitor2-->
+        <!--View Controller - Monitor 1-->
         <scene sceneID="XuQ-Uc-JZF">
             <objects>
                 <viewController id="WqH-I3-0yc" customClass="LOHMViewController" sceneMemberID="viewController">
@@ -151,14 +151,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Monitor2" id="lSf-NY-ojq"/>
+                    <navigationItem key="navigationItem" title="Monitor 1" id="lSf-NY-ojq"/>
                     <connections>
                         <outlet property="tvOhm" destination="hyW-ij-6bJ" id="gei-h4-1hw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B8z-nb-EdH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1219" y="619"/>
+            <point key="canvasLocation" x="1107" y="83"/>
         </scene>
         <!--Table View Controller - TV1-->
         <scene sceneID="IQo-wo-65j">
@@ -306,7 +306,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o3K-2Q-eed" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="925" y="36"/>
+            <point key="canvasLocation" x="1677" y="36"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Bml-68-oeX">
