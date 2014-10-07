@@ -26,6 +26,8 @@
 		678C025219DBBA07000E5726 /* LHTTPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 678C024F19DBBA07000E5726 /* LHTTPTableViewController.m */; };
 		678C025319DBBA07000E5726 /* LHTTPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 678C025119DBBA07000E5726 /* LHTTPViewController.m */; };
 		67B0429219D83A0900A8FCF6 /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 67B0429119D83A0900A8FCF6 /* NetworkManager.m */; };
+		67D574BA19E3BE9F00891975 /* LPicsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67D574B919E3BE9F00891975 /* LPicsTableViewController.m */; };
+		67D9095119E3BF2D0031CC81 /* LPicsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 67D9095019E3BF2D0031CC81 /* LPicsTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,10 @@
 		678C025119DBBA07000E5726 /* LHTTPViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHTTPViewController.m; sourceTree = "<group>"; };
 		67B0429019D83A0900A8FCF6 /* NetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkManager.h; sourceTree = "<group>"; };
 		67B0429119D83A0900A8FCF6 /* NetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkManager.m; sourceTree = "<group>"; };
+		67D574B819E3BE9F00891975 /* LPicsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LPicsTableViewController.h; sourceTree = "<group>"; };
+		67D574B919E3BE9F00891975 /* LPicsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LPicsTableViewController.m; sourceTree = "<group>"; };
+		67D9094F19E3BF2D0031CC81 /* LPicsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LPicsTableViewCell.h; sourceTree = "<group>"; };
+		67D9095019E3BF2D0031CC81 /* LPicsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LPicsTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +135,10 @@
 				67B0428F19D83A0900A8FCF6 /* common */,
 				678C024E19DBBA07000E5726 /* LHTTPTableViewController.h */,
 				678C024F19DBBA07000E5726 /* LHTTPTableViewController.m */,
+				67D574B819E3BE9F00891975 /* LPicsTableViewController.h */,
+				67D574B919E3BE9F00891975 /* LPicsTableViewController.m */,
+				67D9094F19E3BF2D0031CC81 /* LPicsTableViewCell.h */,
+				67D9095019E3BF2D0031CC81 /* LPicsTableViewCell.m */,
 				678C025019DBBA07000E5726 /* LHTTPViewController.h */,
 				678C025119DBBA07000E5726 /* LHTTPViewController.m */,
 				6708F70E19D9AD3B00CA487E /* LOHMViewController.h */,
@@ -288,10 +298,12 @@
 				6708F71019D9AD3B00CA487E /* LOHMViewController.m in Sources */,
 				671FBA4219D45B27000C8BAB /* main.m in Sources */,
 				678C025319DBBA07000E5726 /* LHTTPViewController.m in Sources */,
+				67D9095119E3BF2D0031CC81 /* LPicsTableViewCell.m in Sources */,
 				678C025219DBBA07000E5726 /* LHTTPTableViewController.m in Sources */,
 				671FBA4F19D45B27000C8BAB /* LViewController.m in Sources */,
 				671FBA4619D45B27000C8BAB /* LAppDelegate.m in Sources */,
 				67B0429219D83A0900A8FCF6 /* NetworkManager.m in Sources */,
+				67D574BA19E3BE9F00891975 /* LPicsTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

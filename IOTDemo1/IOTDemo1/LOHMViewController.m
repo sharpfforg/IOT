@@ -149,6 +149,10 @@
 
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:[tmp dataUsingEncoding:NSASCIIStringEncoding] options:NSJSONReadingMutableLeaves error:&err];
 
+    if (![json count]) {
+        _tvOhm.text = @"Nothing...";
+    }
+    
 //    NSLog(@"json log %@", json);
     for (NSDictionary *tmp in json) {
         NSLog(@"%@", [NSString stringWithFormat:@"%@ => %@", [tmp valueForKey:@"timestamp"], [tmp valueForKey:@"value" ]]);

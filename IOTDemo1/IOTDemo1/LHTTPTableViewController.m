@@ -15,7 +15,19 @@
 #include <CFNetwork/CFNetwork.h>
 
 @interface LHTTPTableViewController ()
+{
+    CGFloat orignalTop;
+    int devId;
+    int senIdSwitcher;
+    int senIdGeneric;
+    BOOL isLoading;
+    
+
+}
+
 @property (nonatomic, strong, readwrite) NSURLConnection *  connection;
+@property (nonatomic, strong, readonly) NSTimer *timer;
+@property (nonatomic, strong, readonly) UIActivityIndicatorView *aiv;
 
 @end
 
@@ -40,7 +52,24 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    NSLog(@"viewDidLoad [%f, %f, %f, %f", self.view.bounds.origin.x, self.view.bounds.origin.y,
+          self.view.bounds.size.height, self.view.bounds.size.width);
+    self->orignalTop = 0.0f;
+    
+    // config
+    devId = 14437;
+    senIdSwitcher = 24202;
+    self->senIdGeneric = 24241;
+    
+    isLoading = NO;
 
+    
+    _aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+
+    [self.view addSubview:_aiv];
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -74,11 +103,10 @@
             return;
         }
         NSLog(@"switcher state [%d]", _swLight.on);
-        int dev_id = 14437;
-		int sen_id = 24202;
+
         
         NSString *body = [NSString stringWithFormat:@"{\"value\":%u}", _swLight.on];
-        self.connection = [[NetworkManager sharedInstance] genericData:@"POST" APIKey:nil deviceID:dev_id sensorID:sen_id data:[body UTF8String] photo:nil id:self];
+        self.connection = [[NetworkManager sharedInstance] genericData:@"POST" APIKey:nil deviceID:self->devId sensorID:self->senIdSwitcher data:[body UTF8String] photo:nil id:self];
         [[NetworkManager sharedInstance] didStartNetworkOperation];
         _tfGenericData.text = nil;
     }
@@ -90,12 +118,12 @@
             return;
         NSString *str = _tfGenericData.text;
 //        NSLog(@"sent data %@", str);
-        int dev_id = 14437;
-		int sen_id = 24241;
+//        int dev_id = 14437;
+//		int sen_id = 24241;
 
         NSString *body = [NSString stringWithFormat:@"{\"key\":\"%s\",\"value\":{\"data1\":\"%@\",\"data2\":\"%@\"}}", "110adc3949ba59abbe56e037f20f884e", str, str];
         
-        self.connection = [[NetworkManager sharedInstance] genericData:@"POST" APIKey:nil deviceID:dev_id sensorID:sen_id data:[body UTF8String] photo:nil id:self];
+        self.connection = [[NetworkManager sharedInstance] genericData:@"POST" APIKey:nil deviceID:self->devId sensorID:self->senIdGeneric data:[body UTF8String] photo:nil id:self];
         [[NetworkManager sharedInstance] didStartNetworkOperation];
         _tfGenericData.text = nil;
     }
@@ -140,7 +168,16 @@
 #pragma unused(data)
     
     assert(theConnection == self.connection);
-    
+    if (self->isLoading) {
+        const char *buf = (const char *)[data bytes];
+        int len = [data length];
+        const char *find = strnstr(buf, "\"value\":", len);
+        if (find)
+        {
+            int value = atoi(find + strlen("\"value\":"));
+            self.swLight.on = value;
+        }
+    }
     // do nothing
 }
 
@@ -163,7 +200,11 @@
 {
 #pragma unused(theConnection)
     assert(theConnection == self.connection);
-    
+    if (self->isLoading) {
+        [self LDidLoaded:self.view];
+        self->isLoading = NO;
+        [_aiv stopAnimating];
+    }
     [self stopSendWithStatus:nil];
 }
 
@@ -180,6 +221,74 @@
 
     [[	NetworkManager sharedInstance] didStopNetworkOperation];
 }
+
+
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+	
+    //	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    if (0.0f == self->orignalTop) {
+        self->orignalTop = scrollView.bounds.origin.y;
+        _aiv.frame = CGRectMake(self.view.bounds.size.width / 2 - 10, self->orignalTop + 20, 20.0f, 20.0f);
+    }
+    
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+	
+//	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    NSLog(@"decelerate is %d, origin.y is %f", decelerate, scrollView.bounds.origin.y);
+    if (scrollView.bounds.origin.y < 2*self->orignalTop) {
+        [self LDidLoading:scrollView];
+    }
+
+}
+
+#pragma mark Internal Methodsd
+
+- (void)LDidLoading:(UIScrollView *)scrollView {
+	
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:.3];
+    NSLog(@"LDidLoad [%f, %f, %f, %f", self.view.bounds.origin.x, self.view.bounds.origin.y,
+          self.view.bounds.size.height, self.view.bounds.size.width);
+    
+	[scrollView setContentInset:UIEdgeInsetsMake((CGFloat)abs(self->orignalTop) + self.view.bounds.size.height / 8, 0.0f, 0.0f, 0.0f)];
+    
+//    [NSTimer scheduledTimerWithTimeInterval:5.1f target:self selector:@selector(timeoutHandler:) userInfo:scrollView repeats:NO];
+    
+    self.connection = [[NetworkManager sharedInstance] genericData:@"GET" APIKey:nil deviceID:self->devId sensorID:self->senIdSwitcher data:"" photo:nil id:self];
+    
+    [[NetworkManager sharedInstance] didStartNetworkOperation];
+    
+    self->isLoading = YES;
+//    _aiv.frame = CGRectMake(self.view.bounds.size.width / 2 - 10, self->orignalTop + 20, 20.0f, 20.0f);
+    [_aiv startAnimating];
+    
+//    [_timer fire];
+	[UIView commitAnimations];
+    
+}
+
+//- (void)timeoutHandler:(NSTimer *)timer
+//{
+//    UIScrollView *sv = (UIScrollView *)timer.userInfo;
+//    [self LDidLoaded:sv];
+//}
+
+- (void)LDidLoaded:(UIScrollView *)scrollView {
+
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:.3];
+    [scrollView setContentInset:UIEdgeInsetsMake((CGFloat)abs(self->orignalTop), 0.0f, 0.0f, 0.0f)];
+    NSLog(@"timeoutHandler");
+    [UIView commitAnimations];
+//    self->isLoading = NO;
+}
+
+
 /*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
