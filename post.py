@@ -23,7 +23,7 @@ body3_post = '{"key":"110adc3949ba59abbe56e037f20f884e","value":{"data1":"hello,
 body3_get = ''
 body4_post = ''
 
-method = 'GET' #'POST' or 'GET'             ####
+method = 'POST' #'POST' or 'GET'             ####
 
 
 pic_path = '2.jpg'                          ####
@@ -35,7 +35,7 @@ if os.path.exists(pic_path):
 
 
 body4_get_info_or_content = ''
-body = body2_get                           ####
+body = body2_post                           ####
 content_length = str(len(body))
 
 SEN_ID = SEN_ID2                            ####
