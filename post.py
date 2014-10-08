@@ -12,6 +12,7 @@ SEN_ID1 = '24200' #temprature
 SEN_ID2 = '24202' #switcher
 SEN_ID3 = '24241' #generic
 SEN_ID4 = '24331' #graphic
+SEN_ID5 = '24937' #ohm
 SERVER = 'api.yeelink.net'
 
 
@@ -35,16 +36,23 @@ if os.path.exists(pic_path):
 
 
 body4_get_info_or_content = ''
+<<<<<<< HEAD
 body = body2_post                           ####
+=======
+body5_post = '{"timestamp":"2014-09-29T16:35:14","value":156.7}'
+body5_get = ''
+body = body4_get_info_or_content                           ####
+>>>>>>> FETCH_HEAD
 content_length = str(len(body))
 
-SEN_ID = SEN_ID2                            ####
+SEN_ID = SEN_ID4                            ####
 
 IF_PHOTO_NOT = '/datapoints'
 IF_PHOTO_POST = '/photos' # '' or '/photos'
 IF_PHOTO_INFO = '/photo/info'
 IF_PHOTO_CONTENT = '/photo/content'
-IF_PHOTO = IF_PHOTO_NOT                  ####
+IF_PHOTO_CONTENT_SPEC = '/photo/content/2014-09-24T11:14:25'
+IF_PHOTO = IF_PHOTO_CONTENT_SPEC                     ####
 
 
 req = '/v1.0/device/' + DEV_ID + '/sensor/' + SEN_ID + IF_PHOTO \
@@ -58,9 +66,19 @@ req = '/v1.0/device/' + DEV_ID + '/sensor/' + SEN_ID + IF_PHOTO \
     + '\r\n' \
     + body
 
+history = '/v1.0/device/' + DEV_ID + '/sensor/' + SEN_ID + '.json?start=2010-09-01T14:01:46&end=2014-10-01T15:21:40&interval=300&page=1' \
+    + ' HTTP/1.1\r\n' \
+    + 'Host:' + SERVER + '\r\n' \
+    + 'Accept: */*\r\n' \
+    + 'U-ApiKey: ' + API_KEY + '\r\n' \
+    + 'Content-Length: ' + content_length + '\r\n' \
+    + 'Content-Type: application/x-www-form-urlencoded\r\n' \
+    + 'Connection: close\r\n' \
+    + '\r\n' \
+    + body
 
 conn = httplib.HTTPConnection(SERVER)    
-conn.request(method, req)
+conn.request(method, req)                       ####
 r1 = conn.getresponse() 
 #print r1.status, r1.reason
 print r1.read()
