@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F83E7933-8D1C-42E3-9C91-404F52D1AAD3</string>
+	<key>IDESourceControlProjectName</key>
+	<string>IOTDemo1</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>20446C18-E78F-4309-80E7-324ECD1F4565</key>
+		<string>https://github.com/sharpfforg/IOT.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>IOTDemo1/IOTDemo1.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>20446C18-E78F-4309-80E7-324ECD1F4565</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/sharpfforg/IOT.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>20446C18-E78F-4309-80E7-324ECD1F4565</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>20446C18-E78F-4309-80E7-324ECD1F4565</string>
+			<key>IDESourceControlWCCName</key>
+			<string>IOT</string>
+		</dict>
+	</array>
+</dict>
+</plist>
