@@ -54,7 +54,7 @@ IF_PHOTO_POST = '/photos' # '' or '/photos'
 IF_PHOTO_INFO = '/photo/info'
 IF_PHOTO_CONTENT = '/photo/content'
 IF_PHOTO_CONTENT_SPEC = '/photo/content/2014-09-24T11:14:25'
-IF_PHOTO = IF_PHOTO_CONTENT_SPEC                     ####
+IF_PHOTO = IF_PHOTO_NOT                     ####
 
 
 req = '/v1.0/device/' + DEV_ID + '/sensor/' + SEN_ID + IF_PHOTO \
@@ -68,7 +68,7 @@ req = '/v1.0/device/' + DEV_ID + '/sensor/' + SEN_ID + IF_PHOTO \
     + '\r\n' \
     + body
 
-history = '/v1.0/device/' + DEV_ID + '/sensor/' + SEN_ID + '.json?start=2010-09-01T14:01:46&end=2014-10-01T15:21:40&interval=300&page=1' \
+history = '/v1.0/device/' + DEV_ID + '/sensor/' + SEN_ID + '.json?start=2010-09-01T14:01:46&end=2014-10-08T15:21:40&interval=1&page=1' \
     + ' HTTP/1.1\r\n' \
     + 'Host:' + SERVER + '\r\n' \
     + 'Accept: */*\r\n' \
@@ -80,7 +80,7 @@ history = '/v1.0/device/' + DEV_ID + '/sensor/' + SEN_ID + '.json?start=2010-09-
     + body
 
 conn = httplib.HTTPConnection(SERVER)    
-conn.request(method, req)                       ####
+conn.request(method, history)                       ####
 r1 = conn.getresponse() 
 #print r1.status, r1.reason
 print r1.read()

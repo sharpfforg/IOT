@@ -110,10 +110,17 @@
                                             <rect key="frame" x="141" y="0.0" width="179" height="169"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </imageView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="characterWrap" numberOfLines="2" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="113" translatesAutoresizingMaskIntoConstraints="NO" id="Si4-9f-3uq">
+                                            <rect key="frame" x="20" y="-5" width="113" height="154"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <attributedString key="attributedText"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="ivPic" destination="4pw-pK-K1b" id="5kn-L5-WH5"/>
+                                    <outlet property="lbTimestamp" destination="Si4-9f-3uq" id="jS3-S3-Pfc"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

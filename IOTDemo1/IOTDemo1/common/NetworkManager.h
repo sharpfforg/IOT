@@ -69,6 +69,7 @@
 
 - (NSURLConnection *)genericData:(NSString*)method APIKey:(const char *)key deviceID:(int)dev_id sensorID:(int)sen_id data:(const char *)bytes photo:(NSString *)ph id:who;
 
-- (NSURLConnection *)historyDeviceID:(int)dev_id sensorID:(int)sen_id id:who;
+- (NSURLConnection *)historyDeviceID:(int)dev_id sensorID:(int)sen_id from:(NSTimeInterval)from id:who;
+
 
 @end

@@ -298,7 +298,7 @@
 }
 
 
-- (NSURLConnection *)historyDeviceID:(int)dev_id sensorID:(int)sen_id id:who;
+- (NSURLConnection *)historyDeviceID:(int)dev_id sensorID:(int)sen_id from:(NSTimeInterval)from id:who;
 {
     
     
@@ -307,15 +307,15 @@
 //    strUrl = [NSString stringWithFormat:@"http://api.yeelink.net/v1.0/device/%d/sensor/%d.json?start=2010-09-01T14:01:46&end=2014-10-01T15:21:40&interval=300&page=1", dev_id, sen_id];
     
     NSDate *date2 = [NSDate date];
-    NSDate *date1 = [NSDate dateWithTimeIntervalSinceNow:-3600.00*24];
+    NSDate *date1 = [NSDate dateWithTimeIntervalSinceNow:from];
     
     NSDateFormatter *formatter1 = [[NSDateFormatter alloc] init];
     [formatter1 setDateFormat:@"yyyy-MM-dd"];
     NSDateFormatter *formatter2 = [[NSDateFormatter alloc] init];
     [formatter2 setDateFormat:@"HH:mm:ss"];
-    NSString *from = [NSString stringWithFormat:@"%@T%@", [formatter1 stringFromDate:date1], [formatter2 stringFromDate:date1]];
+    NSString *from1 = [NSString stringWithFormat:@"%@T%@", [formatter1 stringFromDate:date1], [formatter2 stringFromDate:date1]];
     NSString *to = [NSString stringWithFormat:@"%@T%@", [formatter1 stringFromDate:date2], [formatter2 stringFromDate:date2]];
-    strUrl = [NSString stringWithFormat:@"http://api.yeelink.net/v1.0/device/%d/sensor/%d.json?start=%@&end=%@&interval=300&page=1", dev_id, sen_id, from, to];
+    strUrl = [NSString stringWithFormat:@"http://api.yeelink.net/v1.0/device/%d/sensor/%d.json?start=%@&end=%@&interval=1&page=1", dev_id, sen_id, from1, to];
     
 
     NSURL *url = [[NetworkManager sharedInstance] smartURLForString:strUrl];

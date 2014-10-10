@@ -10,5 +10,6 @@
 
 @interface LPicsTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *ivPic;
+@property (weak, nonatomic) IBOutlet UILabel *lbTimestamp;
 
 @end

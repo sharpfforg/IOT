@@ -10,10 +10,39 @@
 #import "LPicsTableViewCell.h"
 #import "NetworkManager.h"
 
+// the record is for listPics
+@interface LPicsRecord : NSObject
+@property (nonatomic, copy, readwrite) NSString *timestamp;
+@property (nonatomic, copy, readwrite) NSString *filePath;
+@property (nonatomic, strong, readwrite) NSOutputStream *fileStream;
+@property (nonatomic, strong, readwrite) NSURLConnection *connPic;
+@property (nonatomic, readwrite) NSInteger index;
+- (id)initWithTimestamp:(NSString*)timestamp index:(NSInteger)index;
+@end
+
+@implementation LPicsRecord
+- (id)initWithTimestamp:(NSString*)timestamp index:(NSInteger)index
+{
+    self.timestamp = timestamp;
+    self.fileStream = nil;
+    self.filePath = nil;
+    self.connPic = nil;
+    self.index = index;
+    return self;
+}
+@end
+
+
 @interface LPicsTableViewController ()
+{
+    int dev_id;
+    int sen_id;
+}
 @property (nonatomic, strong, readwrite) NSURLConnection *  connection;
-@property (nonatomic, strong, readwrite) NSOutputStream *  fileStream;
+
 @property (nonatomic, copy,   readwrite) NSString *  filePath;
+@property (nonatomic, strong, readonly) NSDictionary *dictPics;
+@property (nonatomic, strong, readwrite) NSMutableArray *listPics;
 @end
 
 @implementation LPicsTableViewController
@@ -37,35 +66,19 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    // img content
-    int dev_id = 14437;
-    int sen_id = 24331;
     
-    NSString *body = @"";
-    self.connection = [[NetworkManager sharedInstance] genericData:@"GET" APIKey:nil deviceID:dev_id sensorID:sen_id data:[body UTF8String] photo:@"photo/content" id:self];
-    if (self.connection)
-    {
+    
+    // img content
+    dev_id = 14437;
+    sen_id = 24331;
+    
+    self.connection = [[NetworkManager sharedInstance] historyDeviceID:dev_id sensorID:sen_id from:-3600*24*30 id:self];
+    
+    if (self.connection) {
         [[NetworkManager sharedInstance] didStartNetworkOperation];
-        self.filePath = [[NetworkManager sharedInstance] pathForTemporaryFileWithPrefix:@"Get"];
-        assert(self.filePath != nil);
-        
-        self.fileStream = [NSOutputStream outputStreamToFileAtPath:self.filePath append:NO];
-        assert(self.fileStream != nil);
-        
-        
-        // remove the subpath of tmp first
-        NSString *folder = NSTemporaryDirectory();
-        NSArray *subpaths = [[NSFileManager defaultManager] subpathsAtPath:folder];
-        BOOL ret;
-        NSError *err = [[NSError alloc] init];
-        for (NSString *str in subpaths) {
-            ret = [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", folder, str] error:&err];
-        }
-        
-        
-        
-        [self.fileStream open];
     }
+    
+    self.listPics = [[NSMutableArray alloc] init];
     
 //    // img info
 //    _conn_ts = [[NetworkManager sharedInstance] genericData:@"GET" APIKey:nil deviceID:dev_id sensorID:sen_id data:[body UTF8String] photo:@"photo/info" id:self];
@@ -93,24 +106,79 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
+//#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 3;
+
+    NSLog(@"list count %d", self.listPics.count);
+    return self.listPics ? self.listPics.count : 0;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // get the cell obj.
     LPicsTableViewCell *cell = (LPicsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"idPicture" forIndexPath:indexPath];
     
-    // Configure the cell...
-    if (self.filePath) {
-        UIImage *img = [UIImage imageWithContentsOfFile:self.filePath];
-        NSLog(@"idx [%@], img[%@], path[%@]", indexPath, img, self.filePath);
-        cell.ivPic.image = img;
-//        cell.textLabel.text = @"abc";
+    // get the record context.
+    LPicsRecord *record = [self.listPics objectAtIndex:indexPath.row];
+    if (!record) {
+        return cell;
     }
     
+    // do request the current cell picture
+    if (!record.filePath)
+    {
+        NSString *body = @"";
+        record.connPic = [[NetworkManager sharedInstance] genericData:@"GET" APIKey:nil deviceID:dev_id sensorID:sen_id data:[body UTF8String] photo:[NSString stringWithFormat:@"photo/content/%@", record.timestamp] id:self];
+        if (record.connPic)
+        {
+            [[NetworkManager sharedInstance] didStartNetworkOperation];
+            record.filePath = [[NetworkManager sharedInstance] pathForTemporaryFileWithPrefix:@"Get"];
+            assert(record.filePath != nil);
+            
+            record.fileStream = [NSOutputStream outputStreamToFileAtPath:self.filePath append:NO];
+            assert(record.fileStream != nil);
+            
+            
+            // remove the subpath of tmp first
+//            NSString *folder = NSTemporaryDirectory();
+//            NSArray *subpaths = [[NSFileManager defaultManager] subpathsAtPath:folder];
+//            BOOL ret;
+//            NSError *err = [[NSError alloc] init];
+//            for (NSString *str in subpaths) {
+//                ret = [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", folder, str] error:&err];
+//            }
+            
+            
+            
+            [record.fileStream open];
+        }
+
+    }
+    //
+    else
+    {
+        // Configure the cell...
+        // it will be called while fresh the cell positively.
+        UIImage *img = [UIImage imageWithContentsOfFile:record.filePath];
+        NSLog(@"idx [%@], img[%@], path[%@]", indexPath, img, record.filePath);
+        cell.ivPic.image = img;
+        
+        [cell.lbTimestamp setText:record.timestamp];
+//        int i = 0;
+//        for (NSDictionary *rec in self.dictPics) {
+//            if (indexPath.row == self.dictPics.count - ++i)
+//            {
+//                NSString *s = [[rec valueForKey:@"timestamp"] copy];
+//                s = [s stringByReplacingOccurrencesOfString:@"T" withString:@"\r\n"];
+//                [cell.lbTimestamp setText:s];
+//                break;
+//            }
+//        }
+
+    }
+
+
     return cell;
 }
 
@@ -134,10 +202,11 @@
     
     if ((httpResponse.statusCode / 100) != 2) {
         [self stopReceiveWithStatus:[NSString stringWithFormat:@"HTTP error %zd", (ssize_t) httpResponse.statusCode]];
+        // TODO: show a pic for failed.
     } else {
-        if (theConnection == self.connection)
-        {
-            // -MIMEType strips any parameters, strips leading or trailer whitespace, and lower cases
+        if (self.dictPics) {
+            
+             // -MIMEType strips any parameters, strips leading or trailer whitespace, and lower cases
             // the string, so we can just use -isEqual: on the result.
             contentTypeHeader = [httpResponse MIMEType];
             if (contentTypeHeader == nil) {
@@ -147,15 +216,22 @@
                        && ! [contentTypeHeader isEqual:@"image/gif"]
                        && ! [contentTypeHeader isEqual:@"image/jpg"] ) {
                 [self stopReceiveWithStatus:[NSString stringWithFormat:@"Unsupported Content-Type (%@)", contentTypeHeader]];
-//                self.getOrCancel.title = @"Get";
+        //                self.getOrCancel.title = @"Get";
             } else {
-//                self.lbStatus.text = @"Response img OK.";
+        //                self.lbStatus.text = @"Response img OK.";
+                int i = 0;
+                for (LPicsRecord *record in self.listPics) {
+                    if (theConnection == record.connPic) {
+                        NSLog(@"response index[%d][%@] ok", record.index, record.timestamp);
+                        break;
+                    }
+                    i++;
+                }
+                
             }
         }
-        else if (theConnection == self.connection){
-            
-//            self.lbStatus.text = @"Response info OK.";
-        }
+
+
     }
     
 }
@@ -165,34 +241,55 @@
 // write the data to the file.
 {
 #pragma unused(theConnection)
-    NSInteger       dataLength;
-    const uint8_t * dataBytes;
-    NSInteger       bytesWritten;
-    NSInteger       bytesWrittenSoFar;
+    // do nothing
+    NSInteger dataLength = [data length];
+    const uint8_t *dataBytes  = [data bytes];
     
-    //    assert(theConnection == self.connection || theConnection == self.conn_ts);
+    NSString *tmp = [[NSString alloc] initWithBytes:dataBytes length:dataLength encoding:NSASCIIStringEncoding]; // bytes2string
     
-    dataLength = [data length];
-    dataBytes  = [data bytes];
-    if (theConnection == self.connection) {
-        bytesWrittenSoFar = 0;
-        do {
-            bytesWritten = [self.fileStream write:&dataBytes[bytesWrittenSoFar] maxLength:dataLength - bytesWrittenSoFar];
-            assert(bytesWritten != 0);
-            if (bytesWritten == -1) {
-                [self stopReceiveWithStatus:@"File write error"];
-//                self.getOrCancel.title = @"Get";
-                break;
-            } else {
-                bytesWrittenSoFar += bytesWritten;
-            }
-        } while (bytesWrittenSoFar != dataLength);
+    // load history list to json dictionary.
+    if (!_dictPics) {
+        NSError *err;
+        _dictPics = [NSJSONSerialization JSONObjectWithData:[tmp dataUsingEncoding:NSASCIIStringEncoding] options:NSJSONReadingMutableLeaves error:&err];
+        NSLog(@"self.dictPics %@", _dictPics);
+        
+
     }
-//    else if (theConnection == self.conn_ts){
-//        //        self.lbTime.text = [NSString stringWithFormat:@"%s", dataBytes];
-//        //        self.tvTimes.text = [NSString stringWithFormat:@"%s", dataBytes];
-//        self.tvTimes.text = [[NSString alloc] initWithBytes:dataBytes length:dataLength encoding:NSASCIIStringEncoding];
-//    }
+    // every pictrues data
+    else
+    {
+        //    NSInteger       dataLength;
+        //    const uint8_t * dataBytes;
+        NSInteger       bytesWritten;
+        NSInteger       bytesWrittenSoFar;
+        
+        dataLength = [data length];
+        dataBytes  = [data bytes];
+        for (LPicsRecord *record in self.listPics) {
+            if (theConnection == record.connPic) {
+                bytesWrittenSoFar = 0;
+                do {
+                    bytesWritten = [record.fileStream write:&dataBytes[bytesWrittenSoFar] maxLength:dataLength - bytesWrittenSoFar];
+                    assert(bytesWritten != 0);
+                    if (bytesWritten == -1) {
+                        [self stopReceiveWithStatus:@"File write error"];
+                        break;
+                    } else {
+                        bytesWrittenSoFar += bytesWritten;
+                    }
+                } while (bytesWrittenSoFar != dataLength);
+                break;
+            }
+        }
+        //    else if (theConnection == self.conn_ts){
+        //        //        self.lbTime.text = [NSString stringWithFormat:@"%s", dataBytes];
+        //        //        self.tvTimes.text = [NSString stringWithFormat:@"%s", dataBytes];
+        //        self.tvTimes.text = [[NSString alloc] initWithBytes:dataBytes length:dataLength encoding:NSASCIIStringEncoding];
+        //    }
+    }
+
+    
+
 }
 
 - (void)connection:(NSURLConnection *)theConnection didFailWithError:(NSError *)error
@@ -202,7 +299,7 @@
 {
 #pragma unused(theConnection)
 #pragma  unused(error)
-    assert(theConnection == self.connection /*|| theConnection == self.conn_ts*/);
+//    assert(theConnection == self.connection /*|| theConnection == self.conn_ts*/);
     
     [self stopReceiveWithStatus:@"Connection failed"];
 }
@@ -213,35 +310,68 @@
 // causes the image to be displayed.
 {
 #pragma unused(theConnection)
-    //    assert(theConnection == self.connection || theConnection == self.conn_ts);
+    
+    // list request DONE
+    
     if (theConnection == self.connection) {
+        
+        // init the listPics
+        int i = 0;
+        for (NSDictionary *item in self.dictPics) {
+            
+            NSLog(@"item is [%@]", item);
+            NSString *s = [[item valueForKey:@"timestamp"] copy];
+            s = [s stringByReplacingOccurrencesOfString:@"T" withString:@"\r\n"];
+            LPicsRecord *record = [[LPicsRecord alloc] initWithTimestamp:s index:i];
+            [self.listPics addObject:record];
+            i++;
+        }
+        //        NSEnumerator *em = [self.listPics reverseObjectEnumerator];
+        
+        if (self.dictPics) {
+            NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:1];
+            [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        
+
         if (self.connection != nil) {
             [self.connection cancel];
             self.connection = nil;
         }
-        if (self.fileStream != nil) {
-            [self.fileStream close];
-            self.fileStream = nil;
-        }
-        
-        assert(self.filePath != nil);
-        
-        NSIndexPath *indexPath=[NSIndexPath indexPathForRow:0 inSection:0];
-        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
-        indexPath=[NSIndexPath indexPathForRow:1 inSection:0];
-        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
-        
-        indexPath=[NSIndexPath indexPathForRow:2 inSection:0];
-        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
-        
-//        self.imageView.image = [UIImage imageWithContentsOfFile:self.filePath];
-        
-//        self.lbStatus.text = @"Get img successfully";
-        
-        self.filePath = nil;
-        
-//        self.getOrCancel.title = @"Get";
     }
+    // EVERY pic request DONE
+    else
+    {
+        for (LPicsRecord *record in self.listPics) {
+            if (theConnection == record.connPic) {
+                {
+                    if (record.connPic != nil) {
+                        [record.connPic cancel];
+                        record.connPic = nil;
+                    }
+                    if (record.fileStream != nil) {
+                        [record.fileStream close];
+                        record.fileStream = nil;
+                    }
+                    
+                    assert(record.filePath != nil);
+                    
+                    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:record.index inSection:0];
+                    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+
+                    
+                    //        self.imageView.image = [UIImage imageWithContentsOfFile:self.filePath];
+                    
+                    //        self.lbStatus.text = @"Get img successfully";
+                    
+//                    self.filePath = nil;
+                    
+                    //        self.getOrCancel.title = @"Get";
+                }
+            }
+        }
+    }
+
 //    else if (theConnection == self.conn_ts)
 //    {
 //        if (self.conn_ts != nil) {
@@ -259,7 +389,7 @@
 // or the error status (otherwise).
 {
     
-    
+    NSLog(@"stop reason [%@]", statusString);
     [[NetworkManager sharedInstance] didStopNetworkOperation];
     
 }
