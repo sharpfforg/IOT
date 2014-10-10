@@ -82,7 +82,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
+//#warning Potentially incomplete method implementation.
     // Return the number of sections.
     return [super numberOfSectionsInTableView:tableView];
 //    return 0;
@@ -90,7 +90,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
+//#warning Incomplete method implementation.
     // Return the number of rows in the section.
     return [super tableView:tableView numberOfRowsInSection:section];
     return 0;
@@ -201,7 +201,8 @@
 #pragma unused(theConnection)
     assert(theConnection == self.connection);
     if (self->isLoading) {
-        [self LDidLoaded:self.view];
+		if ([self.view isKindOfClass:[UIScrollView class]])
+			[self LDidLoaded:(UIScrollView *)self.view];
         self->isLoading = NO;
         [_aiv stopAnimating];
     }

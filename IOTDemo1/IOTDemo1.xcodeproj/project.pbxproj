@@ -24,7 +24,6 @@
 		671FBA6219D45B27000C8BAB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 671FBA6019D45B27000C8BAB /* InfoPlist.strings */; };
 		671FBA6419D45B27000C8BAB /* IOTDemo1Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 671FBA6319D45B27000C8BAB /* IOTDemo1Tests.m */; };
 		678C025219DBBA07000E5726 /* LHTTPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 678C024F19DBBA07000E5726 /* LHTTPTableViewController.m */; };
-		678C025319DBBA07000E5726 /* LHTTPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 678C025119DBBA07000E5726 /* LHTTPViewController.m */; };
 		67B0429219D83A0900A8FCF6 /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 67B0429119D83A0900A8FCF6 /* NetworkManager.m */; };
 		67D574BA19E3BE9F00891975 /* LPicsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67D574B919E3BE9F00891975 /* LPicsTableViewController.m */; };
 		67D9095119E3BF2D0031CC81 /* LPicsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 67D9095019E3BF2D0031CC81 /* LPicsTableViewCell.m */; };
@@ -65,8 +64,6 @@
 		671FBA6319D45B27000C8BAB /* IOTDemo1Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IOTDemo1Tests.m; sourceTree = "<group>"; };
 		678C024E19DBBA07000E5726 /* LHTTPTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHTTPTableViewController.h; sourceTree = "<group>"; };
 		678C024F19DBBA07000E5726 /* LHTTPTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHTTPTableViewController.m; sourceTree = "<group>"; };
-		678C025019DBBA07000E5726 /* LHTTPViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHTTPViewController.h; sourceTree = "<group>"; };
-		678C025119DBBA07000E5726 /* LHTTPViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHTTPViewController.m; sourceTree = "<group>"; };
 		67B0429019D83A0900A8FCF6 /* NetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkManager.h; sourceTree = "<group>"; };
 		67B0429119D83A0900A8FCF6 /* NetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkManager.m; sourceTree = "<group>"; };
 		67D574B819E3BE9F00891975 /* LPicsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LPicsTableViewController.h; sourceTree = "<group>"; };
@@ -139,8 +136,6 @@
 				67D574B919E3BE9F00891975 /* LPicsTableViewController.m */,
 				67D9094F19E3BF2D0031CC81 /* LPicsTableViewCell.h */,
 				67D9095019E3BF2D0031CC81 /* LPicsTableViewCell.m */,
-				678C025019DBBA07000E5726 /* LHTTPViewController.h */,
-				678C025119DBBA07000E5726 /* LHTTPViewController.m */,
 				6708F70E19D9AD3B00CA487E /* LOHMViewController.h */,
 				6708F70F19D9AD3B00CA487E /* LOHMViewController.m */,
 				671FBA4419D45B27000C8BAB /* LAppDelegate.h */,
@@ -297,7 +292,6 @@
 			files = (
 				6708F71019D9AD3B00CA487E /* LOHMViewController.m in Sources */,
 				671FBA4219D45B27000C8BAB /* main.m in Sources */,
-				678C025319DBBA07000E5726 /* LHTTPViewController.m in Sources */,
 				67D9095119E3BF2D0031CC81 /* LPicsTableViewCell.m in Sources */,
 				678C025219DBBA07000E5726 /* LHTTPTableViewController.m in Sources */,
 				671FBA4F19D45B27000C8BAB /* LViewController.m in Sources */,

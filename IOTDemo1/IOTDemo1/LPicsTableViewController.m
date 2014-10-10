@@ -37,12 +37,13 @@
 {
     int dev_id;
     int sen_id;
+	CGFloat orignalTop;
 }
 @property (nonatomic, strong, readwrite) NSURLConnection *  connection;
-
-@property (nonatomic, copy,   readwrite) NSString *  filePath;
-@property (nonatomic, strong, readonly) NSDictionary *dictPics;
+//@property (nonatomic, copy,   readwrite) NSString *  filePath;
+@property (nonatomic, strong, readwrite) NSDictionary *dictPics;
 @property (nonatomic, strong, readwrite) NSMutableArray *listPics;
+@property (nonatomic, strong, readonly) UIActivityIndicatorView *aiv;
 @end
 
 @implementation LPicsTableViewController
@@ -66,7 +67,15 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    
+	// remove the subpath of tmp first
+	NSString *folder = NSTemporaryDirectory();
+	NSArray *subpaths = [[NSFileManager defaultManager] subpathsAtPath:folder];
+	BOOL ret;
+	NSError *err = [[NSError alloc] init];
+	for (NSString *str in subpaths) {
+		ret = [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", folder, str] error:&err];
+	}
+
     
     // img content
     dev_id = 14437;
@@ -86,13 +95,84 @@
 //        [[NetworkManager sharedInstance] didStartNetworkOperation];
 //    }
     // Tell the UI we're receiving.
-
+	self->orignalTop = 0.0f;
+	
+	_aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	
+    [self.view addSubview:_aiv];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark Internal Method
+
+- (void)LDidLoading:(UIScrollView *)scrollView {
+	
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:.3];
+    NSLog(@"LDidLoad [%f, %f, %f, %f", self.view.bounds.origin.x, self.view.bounds.origin.y,
+          self.view.bounds.size.height, self.view.bounds.size.width);
+    
+	[scrollView setContentInset:UIEdgeInsetsMake((CGFloat)abs(self->orignalTop) + self.view.bounds.size.height / 8, 0.0f, 0.0f, 0.0f)];
+    
+    
+//    self.connection = [[NetworkManager sharedInstance] genericData:@"GET" APIKey:nil deviceID:self->dev_id sensorID:self->sen_id data:"" photo:nil id:self];
+//    [[NetworkManager sharedInstance] didStartNetworkOperation];
+	self.dictPics = nil;
+	self.listPics = nil;
+	self.listPics = [[NSMutableArray alloc] init];
+	self.connection = [[NetworkManager sharedInstance] historyDeviceID:dev_id sensorID:sen_id from:-3600*24*30 id:self];
+    
+    if (self.connection) {
+        [[NetworkManager sharedInstance] didStartNetworkOperation];
+    }
+    
+	
+	//    _aiv.frame = CGRectMake(self.view.bounds.size.width / 2 - 10, self->orignalTop + 20, 20.0f, 20.0f);
+    [_aiv startAnimating];
+    
+	//    [_timer fire];
+	[UIView commitAnimations];
+    
+}
+- (void)LDidLoaded:(UIScrollView *)scrollView {
+	
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:.3];
+    [scrollView setContentInset:UIEdgeInsetsMake((CGFloat)abs(self->orignalTop), 0.0f, 0.0f, 0.0f)];
+    [UIView commitAnimations];
+	//    self->isLoading = NO;
+	if ([_aiv isAnimating]) {
+		[_aiv stopAnimating];
+	}
+}
+
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+	
+    //	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    if (0.0f == self->orignalTop) {
+        self->orignalTop = 0.1f; //scrollView.bounds.origin.y;
+        _aiv.frame = CGRectMake(self.view.bounds.size.width / 2 - 10, self->orignalTop - 20, 20.0f, 20.0f);
+		NSLog(@"orignal top is [%f]", self->orignalTop);
+    }
+    
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+	
+	//	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    NSLog(@"decelerate is %d, origin.y is %f", decelerate, scrollView.bounds.origin.y);
+    if (scrollView.bounds.origin.y < (0.0f - self.view.bounds.size.height / 8)) {
+        [self LDidLoading:scrollView];
+    }
+	
 }
 
 #pragma mark - Table view data source
@@ -120,11 +200,15 @@
     LPicsTableViewCell *cell = (LPicsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"idPicture" forIndexPath:indexPath];
     
     // get the record context.
+	NSLog(@"indexPath.row [%d]", indexPath.row);
+	if (!self.listPics || !self.listPics.count) {
+		return cell;
+	}
     LPicsRecord *record = [self.listPics objectAtIndex:indexPath.row];
     if (!record) {
         return cell;
     }
-    
+
     // do request the current cell picture
     if (!record.filePath)
     {
@@ -136,20 +220,12 @@
             record.filePath = [[NetworkManager sharedInstance] pathForTemporaryFileWithPrefix:@"Get"];
             assert(record.filePath != nil);
             
-            record.fileStream = [NSOutputStream outputStreamToFileAtPath:self.filePath append:NO];
+            record.fileStream = [NSOutputStream outputStreamToFileAtPath:record.filePath append:NO];
             assert(record.fileStream != nil);
             
             
-            // remove the subpath of tmp first
-//            NSString *folder = NSTemporaryDirectory();
-//            NSArray *subpaths = [[NSFileManager defaultManager] subpathsAtPath:folder];
-//            BOOL ret;
-//            NSError *err = [[NSError alloc] init];
-//            for (NSString *str in subpaths) {
-//                ret = [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", folder, str] error:&err];
-//            }
-            
-            
+			// or else this will be a cached image.
+            cell.ivPic.image = nil;
             
             [record.fileStream open];
         }
@@ -164,24 +240,18 @@
         NSLog(@"idx [%@], img[%@], path[%@]", indexPath, img, record.filePath);
         cell.ivPic.image = img;
         
-        [cell.lbTimestamp setText:record.timestamp];
-//        int i = 0;
-//        for (NSDictionary *rec in self.dictPics) {
-//            if (indexPath.row == self.dictPics.count - ++i)
-//            {
-//                NSString *s = [[rec valueForKey:@"timestamp"] copy];
-//                s = [s stringByReplacingOccurrencesOfString:@"T" withString:@"\r\n"];
-//                [cell.lbTimestamp setText:s];
-//                break;
-//            }
-//        }
 
     }
 
-
+	// set the label text
+	NSString *s = [record.timestamp copy];
+	s = [s stringByReplacingOccurrencesOfString:@"T" withString:@"\r\n"];
+	[cell.lbTimestamp setText:s];
+	NSLog(@"lbTimestamp s[%@] real[%@]", s, cell.lbTimestamp.text);
     return cell;
 }
 
+#pragma mark - Network
 
 - (void)connection:(NSURLConnection *)theConnection didReceiveResponse:(NSURLResponse *)response
 // A delegate method called by the NSURLConnection when the request/response
@@ -312,24 +382,27 @@
 #pragma unused(theConnection)
     
     // list request DONE
-    
     if (theConnection == self.connection) {
         
+		if ([self.view isKindOfClass:[UIScrollView class]])
+			[self LDidLoaded:(UIScrollView *)self.view];
+		
         // init the listPics
         int i = 0;
         for (NSDictionary *item in self.dictPics) {
             
             NSLog(@"item is [%@]", item);
-            NSString *s = [[item valueForKey:@"timestamp"] copy];
-            s = [s stringByReplacingOccurrencesOfString:@"T" withString:@"\r\n"];
-            LPicsRecord *record = [[LPicsRecord alloc] initWithTimestamp:s index:i];
-            [self.listPics addObject:record];
+            LPicsRecord *record = [[LPicsRecord alloc] initWithTimestamp:[item valueForKey:@"timestamp"] index:self.dictPics.count - i - 1];
+            [self.listPics insertObject:record atIndex:0];
+//			if (3 == i) {
+//				break;
+//			}
             i++;
         }
         //        NSEnumerator *em = [self.listPics reverseObjectEnumerator];
         
         if (self.dictPics) {
-            NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:1];
+            NSIndexSet *indexSet=[[NSIndexSet alloc]initWithIndex:0];
             [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
         }
         
@@ -368,7 +441,9 @@
                     
                     //        self.getOrCancel.title = @"Get";
                 }
+				break;
             }
+			
         }
     }
 

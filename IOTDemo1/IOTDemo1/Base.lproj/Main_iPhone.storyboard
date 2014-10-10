@@ -216,13 +216,13 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="send a command" borderStyle="roundedRect" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0pA-r8-5Bl">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="send a command" borderStyle="roundedRect" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0pA-r8-5Bl">
                                                     <rect key="frame" x="20" y="7" width="229" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
-                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ea-FN-d77">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ea-FN-d77">
                                                     <rect key="frame" x="262" y="7" width="36" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="Send">
@@ -234,10 +234,12 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="0pA-r8-5Bl" firstAttribute="leading" secondItem="Osv-94-7I6" secondAttribute="leading" constant="20" symbolic="YES" id="5Dg-sB-Zqe"/>
                                                 <constraint firstItem="7ea-FN-d77" firstAttribute="baseline" secondItem="0pA-r8-5Bl" secondAttribute="baseline" constant="1" id="DgW-uU-VyZ"/>
                                                 <constraint firstItem="0pA-r8-5Bl" firstAttribute="centerY" secondItem="7ea-FN-d77" secondAttribute="centerY" id="EwQ-WH-XvD"/>
                                                 <constraint firstItem="7ea-FN-d77" firstAttribute="bottom" secondItem="0pA-r8-5Bl" secondAttribute="bottom" id="I60-nG-UuM"/>
                                                 <constraint firstAttribute="centerX" secondItem="7ea-FN-d77" secondAttribute="centerX" constant="-120" id="KbA-aN-6ZC"/>
+                                                <constraint firstItem="0pA-r8-5Bl" firstAttribute="top" secondItem="Osv-94-7I6" secondAttribute="top" constant="7" id="Ls5-NU-msK"/>
                                                 <constraint firstAttribute="centerX" secondItem="0pA-r8-5Bl" secondAttribute="centerX" constant="25.5" id="ctk-wk-MPW"/>
                                                 <constraint firstItem="7ea-FN-d77" firstAttribute="baseline" secondItem="0pA-r8-5Bl" secondAttribute="baseline" constant="1" id="f6u-2d-yuB"/>
                                                 <constraint firstItem="7ea-FN-d77" firstAttribute="top" secondItem="0pA-r8-5Bl" secondAttribute="top" id="qSx-QL-cwG"/>

@@ -116,7 +116,7 @@
     NSInteger dataLength = [data length];
     const uint8_t *dataBytes  = [data bytes];
     
-    NSString *str = _tvOhm.text;
+//    NSString *str = _tvOhm.text;
     NSString *tmp = [[NSString alloc] initWithBytes:dataBytes length:dataLength encoding:NSASCIIStringEncoding]; // bytes2string
     
 //    char *p = (char *)&dataBytes[1];
