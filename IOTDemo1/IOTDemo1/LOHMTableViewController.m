@@ -11,8 +11,13 @@
 #import "NetworkManager.h"
 
 @interface LOHMTableViewController ()
+{
+	CGFloat orignalTop;
+}
 @property (nonatomic, strong, readwrite) NSMutableArray *listOhm;
 @property (nonatomic, strong, readwrite) NSURLConnection *connection;
+@property (nonatomic, strong, readonly) UIActivityIndicatorView *aiv;
+
 @end
 
 @implementation LOHMTableViewController
@@ -37,6 +42,8 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     [self requestSenInfo];
+	_aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [self.view addSubview:_aiv];
 }
 
 - (void)didReceiveMemoryWarning
@@ -53,13 +60,52 @@
     
     //    NSString *body = @""; // [body UTF8String] string2bytes
     //    _connection = [[NetworkManager sharedInstance] genericData:@"GET" APIKey:nil deviceID:dev_id sensorID:sen_id data:[body UTF8String] photo:nil id:self];
-    _connection = [[NetworkManager sharedInstance] historyDeviceID:dev_id sensorID:sen_id from:-3600.00*24 id:self];
+    _connection = [[NetworkManager sharedInstance] historyDeviceID:dev_id sensorID:sen_id from:-3600.00*24*30 id:self];
     if (_connection != nil) {
         [[NetworkManager sharedInstance] didStartNetworkOperation];
         self.listOhm = nil;
+		self.listOhm = [[NSMutableArray alloc] init];
     }
 }
 
+
+- (void)LDidLoading:(UIScrollView *)scrollView {
+	
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:.3];
+    NSLog(@"LDidLoad [%f, %f, %f, %f", self.view.bounds.origin.x, self.view.bounds.origin.y,
+          self.view.bounds.size.height, self.view.bounds.size.width);
+    
+	[scrollView setContentInset:UIEdgeInsetsMake((CGFloat)abs(self->orignalTop) + self.view.bounds.size.height / 8, 0.0f, 0.0f, 0.0f)];
+    
+	//    [NSTimer scheduledTimerWithTimeInterval:5.1f target:self selector:@selector(timeoutHandler:) userInfo:scrollView repeats:NO];
+    
+	[self requestSenInfo];
+	//    _aiv.frame = CGRectMake(self.view.bounds.size.width / 2 - 10, self->orignalTop + 20, 20.0f, 20.0f);
+    [_aiv startAnimating];
+    
+	//    [_timer fire];
+	[UIView commitAnimations];
+    
+}
+
+//- (void)timeoutHandler:(NSTimer *)timer
+//{
+//    UIScrollView *sv = (UIScrollView *)timer.userInfo;
+//    [self LDidLoaded:sv];
+//}
+
+- (void)LDidLoaded:(UIScrollView *)scrollView {
+	
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:.3];
+    [scrollView setContentInset:UIEdgeInsetsMake((CGFloat)abs(self->orignalTop), 0.0f, 0.0f, 0.0f)];
+    NSLog(@"restore self->orignalTop[%f]", self->orignalTop);
+    [UIView commitAnimations];
+	if ([_aiv isAnimating]) {
+		[_aiv stopAnimating];
+	}
+}
 
 #pragma mark - Table view data source
 
@@ -83,11 +129,14 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     LOHMTableViewCell *cell = (LOHMTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"idOhm" forIndexPath:indexPath];
-    
-    NSString *strVal = [self.listOhm objectAtIndex:indexPath.row];
-    float fVal = [strVal floatValue];
-    fVal = fVal / 1023;
+	if (!self.listOhm || !self.listOhm.count) {
+		return cell;
+	}
+    NSMutableArray *arrVal = [self.listOhm objectAtIndex:indexPath.row];
+    float fVal = [[arrVal objectAtIndex:1] floatValue];
+    cell.lbVal.text = [NSString stringWithFormat:@"%@ => [%d/1023]", [arrVal objectAtIndex:0], (int)fVal];
     NSLog(@"fVal is [%f]", fVal);
+    fVal = fVal / 1023;
     cell.pvVal.progress = fVal;
 //    cell.pvVal.progress = 0.37f;
 //    cell.pvVal.t
@@ -95,6 +144,31 @@
     
     return cell;
 }
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+	
+    //	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    if (0.0f == self->orignalTop) {
+        self->orignalTop = scrollView.bounds.origin.y <= -10.0f ? scrollView.bounds.origin.y : 0.1f;
+        NSLog(@"origin.y [%f] => [%f]", scrollView.bounds.origin.y, self->orignalTop);
+        _aiv.frame = CGRectMake(self.view.bounds.size.width / 2 - 10, self->orignalTop > 0.0f ? -30.0f : self->orignalTop + 30.0f, 20.0f, 20.0f);
+    }
+	
+    
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+	
+	//	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    NSLog(@"decelerate is %d, origin.y is %f", decelerate, scrollView.bounds.origin.y);
+    if (scrollView.bounds.origin.y - self->orignalTop < (0.0f - self.view.bounds.size.height / 8)) {
+        [self LDidLoading:scrollView];
+    }
+	
+}
+
 
 #pragma mark - Network delegate
 
@@ -147,8 +221,10 @@
         
 //        // enum the every record.
 //        NSString * record = [NSString stringWithFormat:@"%@ => %@", [tmp valueForKey:@"timestamp"], [tmp valueForKey:@"value" ]];
-        
-        [self.listOhm insertObject:[tmp valueForKey:@"timestamp"] atIndex:0];
+        NSMutableArray *arrVal = [[NSMutableArray alloc] initWithCapacity:2];
+        [arrVal addObject:[tmp valueForKey:@"timestamp"]];
+        [arrVal addObject:[tmp valueForKey:@"value"]];
+        [self.listOhm insertObject:arrVal atIndex:0];
         
     }
     
@@ -182,7 +258,8 @@
 {
 #pragma unused(theConnection)
     assert(theConnection == self.connection);
-    
+	if ([self.view isKindOfClass:[UIScrollView class]])
+		[self LDidLoaded:(UIScrollView *)self.view];
     [self stopSendWithStatus:nil];
     
     //    [self requestSenInfo];

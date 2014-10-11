@@ -10,5 +10,6 @@
 
 @interface LOHMTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIProgressView *pvVal;
+@property (weak, nonatomic) IBOutlet UILabel *lbVal;
 
 @end
