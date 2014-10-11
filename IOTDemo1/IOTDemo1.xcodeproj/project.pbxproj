@@ -23,7 +23,9 @@
 		671FBA5A19D45B27000C8BAB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 671FBA3919D45B27000C8BAB /* UIKit.framework */; };
 		671FBA6219D45B27000C8BAB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 671FBA6019D45B27000C8BAB /* InfoPlist.strings */; };
 		671FBA6419D45B27000C8BAB /* IOTDemo1Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 671FBA6319D45B27000C8BAB /* IOTDemo1Tests.m */; };
-		678C025219DBBA07000E5726 /* LHTTPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 678C024F19DBBA07000E5726 /* LHTTPTableViewController.m */; };
+		676BB02819E825A900DFCCDA /* LCtrlTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 676BB02719E825A900DFCCDA /* LCtrlTableViewController.m */; };
+		676BB02B19E8270000DFCCDA /* LOHMTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 676BB02A19E8270000DFCCDA /* LOHMTableViewController.m */; };
+		676BB02E19E828A300DFCCDA /* LOHMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 676BB02D19E828A300DFCCDA /* LOHMTableViewCell.m */; };
 		67B0429219D83A0900A8FCF6 /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 67B0429119D83A0900A8FCF6 /* NetworkManager.m */; };
 		67D574BA19E3BE9F00891975 /* LPicsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67D574B919E3BE9F00891975 /* LPicsTableViewController.m */; };
 		67D9095119E3BF2D0031CC81 /* LPicsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 67D9095019E3BF2D0031CC81 /* LPicsTableViewCell.m */; };
@@ -62,8 +64,12 @@
 		671FBA5F19D45B27000C8BAB /* IOTDemo1Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "IOTDemo1Tests-Info.plist"; sourceTree = "<group>"; };
 		671FBA6119D45B27000C8BAB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		671FBA6319D45B27000C8BAB /* IOTDemo1Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IOTDemo1Tests.m; sourceTree = "<group>"; };
-		678C024E19DBBA07000E5726 /* LHTTPTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHTTPTableViewController.h; sourceTree = "<group>"; };
-		678C024F19DBBA07000E5726 /* LHTTPTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHTTPTableViewController.m; sourceTree = "<group>"; };
+		676BB02619E825A900DFCCDA /* LCtrlTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LCtrlTableViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		676BB02719E825A900DFCCDA /* LCtrlTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LCtrlTableViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		676BB02919E8270000DFCCDA /* LOHMTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOHMTableViewController.h; sourceTree = "<group>"; };
+		676BB02A19E8270000DFCCDA /* LOHMTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOHMTableViewController.m; sourceTree = "<group>"; };
+		676BB02C19E828A300DFCCDA /* LOHMTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LOHMTableViewCell.h; sourceTree = "<group>"; };
+		676BB02D19E828A300DFCCDA /* LOHMTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LOHMTableViewCell.m; sourceTree = "<group>"; };
 		67B0429019D83A0900A8FCF6 /* NetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkManager.h; sourceTree = "<group>"; };
 		67B0429119D83A0900A8FCF6 /* NetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkManager.m; sourceTree = "<group>"; };
 		67D574B819E3BE9F00891975 /* LPicsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LPicsTableViewController.h; sourceTree = "<group>"; };
@@ -130,12 +136,16 @@
 			isa = PBXGroup;
 			children = (
 				67B0428F19D83A0900A8FCF6 /* common */,
-				678C024E19DBBA07000E5726 /* LHTTPTableViewController.h */,
-				678C024F19DBBA07000E5726 /* LHTTPTableViewController.m */,
+				676BB02619E825A900DFCCDA /* LCtrlTableViewController.h */,
+				676BB02719E825A900DFCCDA /* LCtrlTableViewController.m */,
 				67D574B819E3BE9F00891975 /* LPicsTableViewController.h */,
 				67D574B919E3BE9F00891975 /* LPicsTableViewController.m */,
 				67D9094F19E3BF2D0031CC81 /* LPicsTableViewCell.h */,
 				67D9095019E3BF2D0031CC81 /* LPicsTableViewCell.m */,
+				676BB02919E8270000DFCCDA /* LOHMTableViewController.h */,
+				676BB02A19E8270000DFCCDA /* LOHMTableViewController.m */,
+				676BB02C19E828A300DFCCDA /* LOHMTableViewCell.h */,
+				676BB02D19E828A300DFCCDA /* LOHMTableViewCell.m */,
 				6708F70E19D9AD3B00CA487E /* LOHMViewController.h */,
 				6708F70F19D9AD3B00CA487E /* LOHMViewController.m */,
 				671FBA4419D45B27000C8BAB /* LAppDelegate.h */,
@@ -293,11 +303,13 @@
 				6708F71019D9AD3B00CA487E /* LOHMViewController.m in Sources */,
 				671FBA4219D45B27000C8BAB /* main.m in Sources */,
 				67D9095119E3BF2D0031CC81 /* LPicsTableViewCell.m in Sources */,
-				678C025219DBBA07000E5726 /* LHTTPTableViewController.m in Sources */,
 				671FBA4F19D45B27000C8BAB /* LViewController.m in Sources */,
+				676BB02B19E8270000DFCCDA /* LOHMTableViewController.m in Sources */,
 				671FBA4619D45B27000C8BAB /* LAppDelegate.m in Sources */,
+				676BB02819E825A900DFCCDA /* LCtrlTableViewController.m in Sources */,
 				67B0429219D83A0900A8FCF6 /* NetworkManager.m in Sources */,
 				67D574BA19E3BE9F00891975 /* LPicsTableViewController.m in Sources */,
+				676BB02E19E828A300DFCCDA /* LOHMTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -114,7 +114,7 @@
 	
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:.3];
-    NSLog(@"LDidLoad [%f, %f, %f, %f", self.view.bounds.origin.x, self.view.bounds.origin.y,
+    NSLog(@"LDidLoad [%f, %f, %f, %f]", self.view.bounds.origin.x, self.view.bounds.origin.y,
           self.view.bounds.size.height, self.view.bounds.size.width);
     
 	[scrollView setContentInset:UIEdgeInsetsMake((CGFloat)abs(self->orignalTop) + self.view.bounds.size.height / 8, 0.0f, 0.0f, 0.0f)];
@@ -158,9 +158,9 @@
 	
     //	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
     if (0.0f == self->orignalTop) {
-        self->orignalTop = 0.1f; //scrollView.bounds.origin.y;
-        _aiv.frame = CGRectMake(self.view.bounds.size.width / 2 - 10, self->orignalTop - 20, 20.0f, 20.0f);
-		NSLog(@"orignal top is [%f]", self->orignalTop);
+        self->orignalTop = scrollView.bounds.origin.y <= -10.0f ? scrollView.bounds.origin.y : 0.1f;
+        NSLog(@"origin.y [%f] => [%f]", scrollView.bounds.origin.y, self->orignalTop);
+        _aiv.frame = CGRectMake(self.view.bounds.size.width / 2 - 10, self->orignalTop > 0.0f ? -30.0f : self->orignalTop + 30.0f, 20.0f, 20.0f);
     }
     
 }
@@ -169,7 +169,7 @@
 	
 	//	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
     NSLog(@"decelerate is %d, origin.y is %f", decelerate, scrollView.bounds.origin.y);
-    if (scrollView.bounds.origin.y < (0.0f - self.view.bounds.size.height / 8)) {
+    if (scrollView.bounds.origin.y - self->orignalTop < (0.0f - self.view.bounds.size.height / 8)) {
         [self LDidLoading:scrollView];
     }
 	
