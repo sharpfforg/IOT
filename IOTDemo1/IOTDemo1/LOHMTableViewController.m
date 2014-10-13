@@ -60,7 +60,7 @@
     
     //    NSString *body = @""; // [body UTF8String] string2bytes
     //    _connection = [[NetworkManager sharedInstance] genericData:@"GET" APIKey:nil deviceID:dev_id sensorID:sen_id data:[body UTF8String] photo:nil id:self];
-    _connection = [[NetworkManager sharedInstance] historyDeviceID:dev_id sensorID:sen_id from:-3600.00*24*30 id:self];
+    _connection = [[NetworkManager sharedInstance] historyDeviceID:dev_id sensorID:sen_id from:-3600.00*24 id:self];
     if (_connection != nil) {
         [[NetworkManager sharedInstance] didStartNetworkOperation];
         self.listOhm = nil;

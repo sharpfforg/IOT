@@ -304,7 +304,7 @@
     
     NSString *strUrl;
 
-//    strUrl = [NSString stringWithFormat:@"http://api.yeelink.net/v1.0/device/%d/sensor/%d.json?start=2010-09-01T14:01:46&end=2014-10-01T15:21:40&interval=300&page=1", dev_id, sen_id];
+//    strUrl = [NSString stringWithFormat:@"http://api.yeelink.net/v1.0/device/%d/sensor/%d.json?start=2010-09-01T14:01:46&end=2014-10-01T15:21:40&interval=1&page=1", dev_id, sen_id];
     
     NSDate *date2 = [NSDate date];
     NSDate *date1 = [NSDate dateWithTimeIntervalSinceNow:from];
