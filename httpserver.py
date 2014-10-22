@@ -70,15 +70,17 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     server_version = "SimpleHTTPWithUpload/" + __version__
     
     def do_GET(self):
-        """Serve a GET request."""
+        print 'Serve a GET request.'
         # print "....................", threading.currentThread().getName()
         f = self.send_head()
-        if not f:
+        
+        if f:
             self.copyfile(f, self.wfile)
             f.close()
-    
+        
+
     def do_HEAD(self):
-        """Serve a HEAD request."""
+        print 'Serve a HEAD request.'
         f = self.send_head()
         if f:
             f.close()
@@ -189,26 +191,26 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             """
 
         #self.send_error(404, "no update")
+        f = None
         if self.get_element(self.path, 'appid') == str(1000):
             print 'matched'
         else:
             self.send_error(404, "appid error")
             return None
-        if float(self.get_element(self.path, 'ver')) >= float(1.0):
+        if float(self.get_element(self.path, 'ver')) > float(1.0):
             self.send_error(404, "no update")
         else:
-            ctype = self.guess_type(self.translate_path(self.path))
-            self.send_response(200)
-            self.send_header("Content-type", ctype)
-            body = 'http://www.baidu.com'
-            self.send_header("Content-Length", 3)
-            self.send_header("Content-type", "text/html")
-            #self.send_header("Last-Modified", self.date_time_string(fs.st_mtime))
-            self.end_headers()
-            print '200'
-        return 'abc'
-        path = self.translate_path(self.path)
-        f = None
+            f = StringIO()
+            if f:
+                f.write('www.baidu.com')
+                length = f.tell()
+                f.seek(0)
+                self.send_response(200)
+                self.send_header("Content-type", "text/html")
+                self.send_header("Content-Length", str(length))
+                self.end_headers()
+        return f
+
         if os.path.isdir(path):
             if not self.path.endswith('/'):
                 # redirect browser - doing basically what apache does
