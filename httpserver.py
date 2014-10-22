@@ -1,7 +1,12 @@
+
 __version__ = "0.1"
 __all__ = ["SimpleHTTPRequestHandler"]
 __author__ = "bones7456"
 __home_page__ = ""
+
+download_url_for_app = 'http://192.168.1.101:1234/OTA/XDemo.vxp'
+APP_ID = '-1'
+APP_VER = '0.1.0'
 
 import os, sys, platform
 import posixpath
@@ -66,7 +71,7 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         request omits the actual contents of the file.
         
         """
-    
+    #Protocol     = "HTTP/1.1"
     server_version = "SimpleHTTPWithUpload/" + __version__
     
     def do_GET(self):
@@ -189,27 +194,37 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             None, in which case the caller has nothing further to do.
             
             """
-
-        #self.send_error(404, "no update")
+        print 'trans start ', self.path
+        if -1 != self.path.find('//'):
+            pos = self.path.find('/')+2
+            pos += self.path[pos:].find('/')
+            self.path = self.path[pos:]
+            print self.path
+        path = self.translate_path(self.path)
+        print 'trans end ', path
         f = None
-        if self.get_element(self.path, 'appid') == str(1000):
-            print 'matched'
-        else:
-            self.send_error(404, "appid error")
-            return None
-        if float(self.get_element(self.path, 'ver')) > float(1.0):
-            self.send_error(404, "no update")
-        else:
-            f = StringIO()
-            if f:
-                f.write('www.baidu.com')
-                length = f.tell()
-                f.seek(0)
-                self.send_response(200)
-                self.send_header("Content-type", "text/html")
-                self.send_header("Content-Length", str(length))
-                self.end_headers()
-        return f
+        query = self.path.find('?')
+        if query != -1:
+            if self.get_element(self.path, 'app_id') == APP_ID:
+                print 'matched'
+            else:
+                self.send_error(404, "appid error")
+                return None
+            if self.get_element(self.path, 'ver') == APP_VER:
+                self.send_error(404, "no update")
+            else:
+                f = StringIO()
+                if f:
+                    f.write(download_url_for_app)
+                    length = f.tell()
+                    f.seek(0)
+                    self.send_response(200)
+                    self.send_header("connection", "keep-alive")
+                    self.send_header("Content-type", "text/html")
+                    self.send_header("Content-Length", str(length))
+                    self.end_headers()
+
+            return f
 
         if os.path.isdir(path):
             if not self.path.endswith('/'):
@@ -226,6 +241,7 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             else:
                 return self.list_directory(path)
         ctype = self.guess_type(path)
+        
         try:
             # Always read in binary mode. Opening files in text mode may cause
             # newline translations, making the actual size of the content
@@ -371,14 +387,15 @@ class ThreadingServer(ThreadingMixIn, BaseHTTPServer.HTTPServer):
 
 def test(HandlerClass = SimpleHTTPRequestHandler,
          ServerClass = BaseHTTPServer.HTTPServer):
-    BaseHTTPServer.test(HandlerClass, ServerClass)
+    BaseHTTPServer.test(HandlerClass, ServerClass, 'HTTP/1.1')
 
 if __name__ == '__main__':
-    # test()
+    test()
     
     #single thread
-    # srvr = BaseHTTPServer.HTTPServer(serveraddr, SimpleHTTPRequestHandler)
+    #srvr = BaseHTTPServer.HTTPServer(serveraddr, SimpleHTTPRequestHandler, 'HTTP/1.1')
     
     #multi thread
-    srvr = ThreadingServer(serveraddr, SimpleHTTPRequestHandler)
+    #srvr = ThreadingServer(serveraddr, SimpleHTTPRequestHandler)
+    
     srvr.serve_forever()
